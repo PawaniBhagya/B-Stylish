@@ -1,7 +1,7 @@
 import React from 'react'
 import './ProductDisplay.css'
-import star_icon from '../Assets/star_icon.png';
-import star_dull_icon from '../Assets/star_dull_icon.png';
+import star_icon from "../Assets/star_icon.png";
+import star_dull_icon from "../Assets/star_dull_icon.png";
 
 
 
@@ -34,7 +34,7 @@ const ProductDisplay = (props) => {
                 <div className="productdisplay-right-price-old">${product.old_price}</div>
                 <div className="productdisplay-right-price-old">${product.new_price}</div>
             </div>
-            
+
         </div>
     </div>
   )

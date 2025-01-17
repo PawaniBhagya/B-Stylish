@@ -121,7 +121,76 @@ app.post('/removeproduct',async (req,res)=>{
         name:req.body.name,
     })
 })
+
+//Creating API for getting all products
+app.get('/allproducts',async (req,res)=>{
+    let products = await Product.find({});
+    console.log("All Products Fetched");
+    res.send(products);
+})
+
+//Schema Creating for User Model
+
+const Users = mongoose.model('Users',{
+    name:{
+        type:String,
+    },
+    email:{
+        type:String,
+        unique:true,
+    },
+    password:{
+        type:String,
+    },
+    cartData:{
+        type:Object,
+    },
+    date:{
+        type:Date,
+        default:Date.now,
+    }
+    })
+
+    //Creating EndPoint for Registering User
+    app.post('/signup',async (req,res)=>{
+
+        let check = await Users.findOne({email:req.body.email});
+        if (check){
+            return res.status(400).json({
+                success:false,
+                errors:"Exixting User Found with the Same Email Address",
+            })
+        }
+        let cart = {};
+        for (let i = 1; i < 300; i++){
+            cart[i]=0;
+        }
+        const user = new Users({
+            name:req.body.username,
+            email:req.body.email,
+            password:req.body.password,
+            cartData:cart,
+        })
+
+        await user.save();
+
+        const data = {
+            user:{
+                id:user.id
+            }
+        }
+
+        const token = jwt.sign(data,'secret_ecom');
+        res.json({
+            success:true,token
+        })
+
+    })
+
+    //Creating EndPoint for Login User
     
+
+
 app.listen(port,(error)=>{
     if (!error){
         console.log("Server Running on Port " +port)
